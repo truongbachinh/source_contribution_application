@@ -131,7 +131,7 @@
                     </li>
                 <?php elseif (!empty($_SESSION["current_user"]) && $currentUser['role'] === "manager-marketing") : ?>
                     <li class="menu-item active ">
-                        <a href="../index.php" class="menu-link">
+                        <a href="../manager_marketing/dashboard.php" class="menu-link">
                             <span class="menu-label">
                                 <span class="menu-name">
                                     Home Page

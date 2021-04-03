@@ -132,7 +132,7 @@ if (isset($_POST["login"])) {
         $userCurrent =  $_SESSION["current_user"] = $user;
     ?>
         <script type="text/javascript">
-            window.location = "../manager_marketing/index.php";
+            window.location = "../manager_marketing/dashboard.php";
         </script>
 <?php
     }

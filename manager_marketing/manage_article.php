@@ -1,6 +1,5 @@
 <?php
-include "../../config.php";
-$idTopic = $_GET['idt'];
+include "../config.php";
 $userFacultyId = $_SESSION["current_user"]["faculty_id"];
 $userId = $_SESSION["current_user"]["u_id"];
 
@@ -12,29 +11,29 @@ $userId = $_SESSION["current_user"]["u_id"];
 // $faculty = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM faculty WHERE f_id = $file_faculty_id"), MYSQLI_ASSOC);
 
 $statusId = null;
-if ($_POST['action'] == "status_id") {
+if (isset($_POST['status_id'])) {
     $statusId = $_POST['status_id'];
 };
 
 $topic_id = null;
-if ($_POST['action'] == "topic_id") {
+if (isset($_POST['topic_id'])) {
     $topic_id = $_POST['topic_id'];
 };
+printf($topic_id);
 
 $studentSb = array();
 //$res = $conn->query("SELECT files.*, u.*,f.* FROM file_submit_to_topic as files INNER JOIN user as u ON files.file_userId_uploaded = u.u_id INNER JOIN faculty.f_id = user.faculty_id WHERE u.role = 'student' AND files.file_topic_uploaded = '$idTopic' ORDER BY id DESC LIMIT 1");
-$query = "SELECT file_submit_to_topic.*, user.*,faculty.* FROM file_submit_to_topic INNER JOIN user ON file_submit_to_topic.file_userId_uploaded = user.u_id INNER JOIN faculty ON faculty.f_id = user.faculty_id WHERE user.role = 'student' AND user.faculty_id = '$userFacultyId' AND file_submit_to_topic.file_topic_uploaded = '$idTopic'  ";
+$query = "SELECT file_submit_to_topic.*, user.*,faculty.* FROM file_submit_to_topic INNER JOIN user ON file_submit_to_topic.file_userId_uploaded = user.u_id INNER JOIN faculty ON faculty.f_id = user.faculty_id WHERE user.role = 'student' AND user.faculty_id = '$userFacultyId'";
 if ($statusId != null) {
     if ($statusId == "4") {
-        $query += " and file_submit_to_topic.id not in (select file_comment.file_submited_id from file_comment)";
+        $query .= " and file_submit_to_topic.id not in (select file_comment.file_submited_id from file_comment)";
     } else {
-        $query += " AND file_submit_to_topic.file_status = '$statusId'";
+        $query .= " AND file_submit_to_topic.file_status = '$statusId'";
     }
 }
 
-
 if ($topic_id != null) {
-    $query += " AND file_submit_to_topic.file_topic_uploaded = '$topic_id'";
+    $query .= " AND file_submit_to_topic.file_topic_uploaded = '$topic_id'";
 }
 
 printf($query);
@@ -85,32 +84,60 @@ while ($rowSt = mysqli_fetch_array($topic_result)) {
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div class="form-group">
-                                                <form method="POST" action="manage_article.php?action=status_id">
+                                                <form method="post" action="manage_article.php">
                                                 <select class="form-control " data-select2-id="1" tabindex="-1"
                                                         aria-hidden="true" name="status_id">
-                                                    <option selected="" data-select2-id="3">Select status</option>
+                                                    <option selected="" data-select2-id="3">
+                                                        <?php
+                                                        if ($statusId == null) {
+                                                            echo "Select Status";
+                                                        } else if ($statusId == 1) {
+                                                            echo "Processing";
+                                                        } else if ($statusId == 2) {
+                                                            echo "Approved";
+                                                        } else if ($statusId == 3) {
+                                                            echo "Rejected";
+                                                        } else if ($statusId == 4) {
+                                                            echo "Not feedback";
+                                                        }
+                                                            ?>
+                                                    </option>
                                                     <option data-select2-id="16" value="1">Processing</option>
                                                     <option data-select2-id="17" value="2">Approved</option>
                                                     <option data-select2-id="16" value="3">Rejected</option>
                                                     <option data-select2-id="16" value="4">Not feedback</option>
                                                 </select>
+                                                    <input type="submit" name="submit" value="Go"/>
                                                 </form>
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="form-group ">
-                                                <form method="POST" action="manage_article.php?action=topic_id">
+                                                <form method="post" action="manage_article.php">
                                                 <select class="form-control " data-select2-id="1" tabindex="-1"
-                                                        aria-hidden="true">
-                                                    <option selected="" data-select2-id="3">Select topic</option>
+                                                        aria-hidden="true" name="topic_id">
+                                                    <option selected="" data-select2-id="3">
+                                                        <?php
+                                                        if ($topic_id == null) {
+                                                            echo "Select topic";
+                                                        } else {
+                                                        foreach ($topicSb as $row) {
+                                                            if ($topic_id == $row["id"]) {
+                                                                echo ($row["topic_name"]);
+                                                                break;
+                                                            }
+                                                        }
+                                                        }
+                                                        ?></option>
                                                     <?php
                                                     foreach ($topicSb as $row) {
                                                         ?>
-                                                        <option data-select2-id="16" value="<?php echo $row["topic_id"] ?>"><?=$row["topic_name"]?></option>
+                                                        <option data-select2-id="16" value="<?php echo $row["id"] ?>"><?=$row["topic_name"]?></option>
                                                     <?php
                                                     }
                                                     ?>
                                                 </select>
+                                                    <input type="submit" name="submit" value="Go"/>
                                                 </form>
                                             </div>
                                         </div>
@@ -146,7 +173,7 @@ while ($rowSt = mysqli_fetch_array($topic_result)) {
                                     ?>
                                     <tr>
                                         <th scope="row"><?= $stt++ ?></th>
-                                        <td><img class="avatar avatar-lg" style="border-radius: 50%" src="../../assets/img/users/user-1.jpg"></td>
+                                        <td><img class="avatar avatar-lg" style="border-radius: 50%" src="../assets/img/users/user-1.jpg"></td>
                                         <td style="padding: 2.5%;"><?= $stReport["username"] ?></td>
                                         <td style="padding: 2.5%;"><?= $stReport["email"] ?></td>
                                         <td style="padding: 1.5%;">

@@ -2,22 +2,16 @@
 include '../config.php';
 // Perform query
 /** @var TYPE_NAME $conn */
-//$userid = $_SESSION["current_user"]["u_id"];
-$userid = "44";
+session_start();
+$userid = $_SESSION["current_user"]["u_id"];
 $partnerId = null;
 if (isset($_GET['partner'])) {
     $partnerId = $_GET['partner'];
 }
 
-$_SESSION["userid"] = $userid;
-$_SESSION["partnerId"] = $partnerId;
-
-//if (isset($_GET)) {
-//    var_dump($_GET);
-//}
-
-$query = "select * FROM tbl_chat WHERE id in (SELECT max(id) FROM tbl_chat WHERE tbl_chat.use_id_1 = $userid OR tbl_chat.use_id_2 = $userid GROUP BY use_id_1, use_id_2)";
+$query = "select * FROM tbl_chat WHERE id in (SELECT max(id) FROM tbl_chat WHERE tbl_chat.use_id_1 = $userid OR tbl_chat.use_id_2 = $userid GROUP BY use_id_1, use_id_2) ORDER by id DESC ";
 $res = $conn->query($query);
+
 $conversation = [];
 $a = 0;
 while($row = $res->fetch_array()):
@@ -29,10 +23,9 @@ while($row = $res->fetch_array()):
     $conversation[$partnerIdCon] = $row;
 endwhile;
 
+$_SESSION["userid"] = $userid;
+$_SESSION["chat"]["partnerId"] = $partnerId;
 
-//var_dump($res);
-//$useridIsOne = $res["use_id_1"] == $userid;
-//$_SESSION["useridIsOne"] = $useridIsOne;
 ?>
 
 <!DOCTYPE html>
@@ -56,17 +49,17 @@ endwhile;
                     document.getElementById('chat').innerHTML = req.responseText;
                 }
             }
-            req.open('GET','chat.php', true);
+            req.open('GET','chat.php?partner=<?php echo $partnerId ?>', true);
             req.send();
         }
         setInterval(function(){ajax()},1000);
     </script>
-    <?php include "../user/partials/html_header.php"; ?>
+    <?php include "../partials/html_header.php"; ?>
 </head>
 <body>
-<?php include "../user/partials/aside.php"; ?>
+<?php include "../partials/aside.php"; ?>
 <main class="admin-main">
-    <?php include "../user/partials/header.php"; ?>
+    <?php include "../partials/header.php"; ?>
 <div class="container m-t-30">
     <div class="messaging">
         <div class="inbox_msg">
@@ -134,15 +127,14 @@ endwhile;
                 </div>
                 <div class="type_msg">
                     <form action="" method="post">
-                    <div class="input_msg_write">
+                        <div class="input_msg_write">
                             <label for="message">Chat:</label><br>
                             <textarea name="message" id="message-write" class="write_msg" placeholder="Type a message"></textarea><br>
-                    </div>
-                    <input type="submit" name="submit" class="msg_send_btn"><i class="fa fa-paper-plane-o" aria-hidden="true" value=""></i></input>
+                        </div>
+                        <input input type="submit" name="submit" value="Send" class="msg_send_btn"><i class="fa fa-paper-plane-o" aria-hidden="true" value="submit"></i></input>
                     </form>
                     <?php
                     if (isset($_POST['submit'])) {
-
                         $message = $_POST['message'];
                         if ($message != null) {
                             $query = "INSERT INTO tbl_chat (use_id_1, use_id_2, message) VALUES ('$userid','$partnerId', '$message')";

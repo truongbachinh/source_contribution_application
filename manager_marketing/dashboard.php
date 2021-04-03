@@ -1,13 +1,25 @@
 <?php
-include "../../config.php";
+include "../config.php";
 //include "../../connect_db.php";
-require "../../Chart/src/AntoineAugusti/EasyPHPCharts/Chart.php";
+require "../Chart/src/AntoineAugusti/EasyPHPCharts/Chart.php";
 use Antoineaugusti\EasyPHPCharts\Chart;
+$_countStudent = $conn -> query("SELECT COUNT( * ) AS count FROM `user`");
+$countStudent = null;
+while ($rowSt = mysqli_fetch_array($_countStudent)) {
+    $countStudent = $rowSt["count"];
+}
+
+$_countTopic = $conn -> query("SELECT COUNT( * ) AS count FROM `topic`");
+$countTopic = null;
+while ($rowSt = mysqli_fetch_array($_countTopic)) {
+    $countTopic = $rowSt["count"];
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="../../Chart/examples/chart.css">
+    <link rel="stylesheet" href="../Chart/examples/chart.css">
     <style>
         *{margin: 0; padding: 0;}
         @import url(http://fonts.googleapis.com/css?family=Roboto);
@@ -17,7 +29,7 @@ use Antoineaugusti\EasyPHPCharts\Chart;
         .clearBoth:after{width: 300px; border: 1px solid #EEE; margin: 50px 0; display: block;}
         .containerChartLegend{width: 480px;padding-left: 20px}
     </style>
-    <script src="../../Chart/examples/ChartJS.min.js"></script>
+    <script src="../Chart/examples/ChartJS.min.js"></script>
     <?php include "../partials/html_header.php"; ?>
 </head>
 <body class="sidebar-pinned ">
@@ -44,7 +56,7 @@ use Antoineaugusti\EasyPHPCharts\Chart;
                             </div>
                             <div>
                                 <p class="text-muted text-overline m-0">Amount of User</p>
-                                <h3 class="fw-400">400 Users</h3>
+                                <h3 class="fw-400"><?= $countStudent["count"] ?> Users</h3>
                             </div>
                         </div>
                     </div>
@@ -61,7 +73,7 @@ use Antoineaugusti\EasyPHPCharts\Chart;
                             </div>
                             <div>
                                 <p class="text-muted text-overline m-0">Amount of contribution</p>
-                                <h3 class="fw-400">40 Contributions</h3>
+                                <h3 class="fw-400"><?= $countStudent["count"] ?> Contributions</h3>
                             </div>
                         </div>
                     </div>
@@ -114,9 +126,9 @@ use Antoineaugusti\EasyPHPCharts\Chart;
                         <div class="card-body">
                             <?php
                             /** @var TYPE_NAME $conn */
+
                             $chartTopicbyYear = $conn->query("select faculty.f_id, faculty.f_name, year(topic.topic_deadline) as year, count(*) as contributions from faculty join topic on faculty.f_id = topic.faculty_id group by year(topic.topic_deadline), faculty.f_id");
 
-//                            var_dump($chartTopicbyYear);
                             $yearTopicbyYear = array();
                             $keyTopicbyYear = array();
 
