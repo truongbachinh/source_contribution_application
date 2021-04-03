@@ -15,15 +15,14 @@ if (isset($_POST['status_id'])) {
     $statusId = $_POST['status_id'];
 };
 
-$topic_id = null;
+$submission_id = null;
 if (isset($_POST['topic_id'])) {
-    $topic_id = $_POST['topic_id'];
+    $submission_id = $_POST['topic_id'];
 };
-printf($topic_id);
 
 $studentSb = array();
 //$res = $conn->query("SELECT files.*, u.*,f.* FROM file_submit_to_topic as files INNER JOIN user as u ON files.file_userId_uploaded = u.u_id INNER JOIN faculty.f_id = user.faculty_id WHERE u.role = 'student' AND files.file_topic_uploaded = '$idTopic' ORDER BY id DESC LIMIT 1");
-$query = "SELECT file_submit_to_topic.*, user.*,faculty.* FROM file_submit_to_topic INNER JOIN user ON file_submit_to_topic.file_userId_uploaded = user.u_id INNER JOIN faculty ON faculty.f_id = user.faculty_id WHERE user.role = 'student' AND user.faculty_id = '$userFacultyId'";
+$query = "SELECT file_submit_to_submission.*, user.*,faculty.* FROM file_submit_to_submission INNER JOIN user ON file_submit_to_submission.file_userId_uploaded = user.u_id INNER JOIN faculty ON faculty.f_id = user.faculty_id WHERE user.role = 'student' AND user.faculty_id = '$userFacultyId'";
 if ($statusId != null) {
     if ($statusId == "4") {
         $query .= " and file_submit_to_topic.id not in (select file_comment.file_submited_id from file_comment)";
@@ -32,29 +31,31 @@ if ($statusId != null) {
     }
 }
 
-if ($topic_id != null) {
-    $query .= " AND file_submit_to_topic.file_topic_uploaded = '$topic_id'";
+if ($submission_id != null) {
+    $query .= " AND file_submit_to_submission.file_topic_uploaded = '$submission_id'";
 }
 
-printf($query);
 $result = $conn->query($query);
 
 
 while ($rowSt = mysqli_fetch_array($result)) {
     $studentSb[] = $rowSt;
 }
-$topicSb = array();
+$submissionSb = array();
 
-$topic_result = $conn->query("SELECT * FROM topic");
-while ($rowSt = mysqli_fetch_array($topic_result)) {
-    $topicSb[] = $rowSt;
+$submission_result = $conn->query("SELECT * FROM submission");
+while ($rowSt = mysqli_fetch_array($submission_result)) {
+    $submissionSb[] = $rowSt;
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <?php include "../partials/html_header.php"; ?>
 </head>
+
 <body class="sidebar-pinned ">
 <?php include "../partials/aside.php"; ?>
 <main class="admin-main">
@@ -118,11 +119,11 @@ while ($rowSt = mysqli_fetch_array($topic_result)) {
                                                         aria-hidden="true" name="topic_id">
                                                     <option selected="" data-select2-id="3">
                                                         <?php
-                                                        if ($topic_id == null) {
+                                                        if ($submission_id == null) {
                                                             echo "Select topic";
                                                         } else {
-                                                        foreach ($topicSb as $row) {
-                                                            if ($topic_id == $row["id"]) {
+                                                        foreach ($submissionSb as $row) {
+                                                            if ($submission_id == $row["id"]) {
                                                                 echo ($row["topic_name"]);
                                                                 break;
                                                             }
@@ -130,7 +131,7 @@ while ($rowSt = mysqli_fetch_array($topic_result)) {
                                                         }
                                                         ?></option>
                                                     <?php
-                                                    foreach ($topicSb as $row) {
+                                                    foreach ($submissionSb as $row) {
                                                         ?>
                                                         <option data-select2-id="16" value="<?php echo $row["id"] ?>"><?=$row["topic_name"]?></option>
                                                     <?php

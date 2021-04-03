@@ -44,13 +44,13 @@ if (isset($_POST['uploadCommnet'])) {
     $uploadCmt = $conn->query("INSERT INTO `file_comment` (`file_comment_id`, `file_comment_content`, `file_comment_time`, `file_comment_user`, `file_submited_id`) VALUES (NULL, '$_POST[commentContent]', '" . time() . "', '$userId', '$idFile'); ");
     $changeStatus = $conn->query("UPDATE `file_submit_to_submission` SET `file_status` = '$_POST[statusOfFile]' where `id` = '$idFile'");
     if ($uploadCmt == true) {
-?>
+        ?>
         <script>
             alert("oke");
             location.reload();
             // window.location.replace("./listofreport.php?idfile=<?= $fileSubmission['id'] ?>&idst=<?= $fileSubmission['u_id'] ?>");
         </script>
-<?php
+        <?php
 
     }
 }
@@ -348,21 +348,21 @@ if (isset($_POST['uploadCommnet'])) {
 
 
                     <!--COMPLETED ACTIONS DONUTS CHART-->
-<!--                    <div>-->
-<!--                        <form action="" method="post" enctype="multipart/form-data">-->
-<!--                            <div class="form-group">-->
-                                <!-- <label for="inputName">Comment</label>
-                                                <textarea type="text" class="form-control" id="inputName" name="commentContent" placeholder="Name of article"></textarea> -->
-<!--                                <h3>Feedback</h3>-->
-<!--                                <textarea type="text" class="form-control" id="inputName" name="commentContent" placeholder="Feedback to student" style="width: 88%; height: 50px; border-radius: 3px; border-radius: 14px; resize: none; margin-bottom: 7% "></textarea>-->
-<!--                            </div>-->
-<!--                            <div class="form-group" style="text-align:center;">-->
-<!--                                <input type="submit" name="uploadCommnet" class="btn btn-succecss" value="Feedback" style="font-size: 20px; background-color: yellowgreen; border-radius:16px; display: inline-block; " id="uploadFile">-->
-<!--                            </div>-->
-<!--                        </form>-->
-<!--                    </div>-->
-<!---->
-<!--                    <hr>-->
+                    <!--                    <div>-->
+                    <!--                        <form action="" method="post" enctype="multipart/form-data">-->
+                    <!--                            <div class="form-group">-->
+                    <!-- <label for="inputName">Comment</label>
+                                    <textarea type="text" class="form-control" id="inputName" name="commentContent" placeholder="Name of article"></textarea> -->
+                    <!--                                <h3>Feedback</h3>-->
+                    <!--                                <textarea type="text" class="form-control" id="inputName" name="commentContent" placeholder="Feedback to student" style="width: 88%; height: 50px; border-radius: 3px; border-radius: 14px; resize: none; margin-bottom: 7% "></textarea>-->
+                    <!--                            </div>-->
+                    <!--                            <div class="form-group" style="text-align:center;">-->
+                    <!--                                <input type="submit" name="uploadCommnet" class="btn btn-succecss" value="Feedback" style="font-size: 20px; background-color: yellowgreen; border-radius:16px; display: inline-block; " id="uploadFile">-->
+                    <!--                            </div>-->
+                    <!--                        </form>-->
+                    <!--                    </div>-->
+                    <!---->
+                    <!--                    <hr>-->
 
                     <div class="feedback-submission">
                         <b class="student-if">Feedback</b>
@@ -390,9 +390,9 @@ if (isset($_POST['uploadCommnet'])) {
                     </div>
                     <hr>
                     <div>
-                    <a style="height: 40px; background: #0a6aa1 ; width: 70px; text-align: center" href="view_article.php?file_id=<?php echo $fileContent['file_content_id']?>">
-                    download
-                    </a>
+                        <a style="height: 40px; background: #0a6aa1 ; width: 70px; text-align: center" href="view_article.php?file_id=<?php echo $fileContent['file_content_id']?>">
+                            download
+                        </a>
                     </div>
                     <?php
                     if (isset($_GET['file_id'])) {
@@ -448,7 +448,7 @@ if (isset($_POST['uploadCommnet'])) {
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-66116118-3"></script>
-<script> 
+<script>
     window.dataLayer = window.dataLayer || [];
 
     function gtag() {

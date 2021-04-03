@@ -69,9 +69,9 @@
                                 </a>
                             </li>
                             <li class="menu-item">
-                                <a href="../admin/manage_topics.php" class=" menu-link">
+                                <a href="../admin/manage_submissions.php" class=" menu-link">
                                     <span class="menu-label">
-                                        <span class="menu-name">Manage Topic</span>
+                                        <span class="menu-name">Manage Submission</span>
                                     </span>
                                     <span class="menu-icon">
                                         <i class="mdi mdi-book-open-variant mdi-24px "></i>
@@ -95,9 +95,9 @@
                     </li>
 
                     <li class="menu-item ">
-                        <a href="../student/view-all-topic.php" class="menu-link">
+                        <a href="../student/view-all-submission.php" class="menu-link">
                             <span class="menu-label">
-                                <span class="menu-name">My Topic
+                                <span class="menu-name">My Submission
                                 </span>
                             </span>
                             <span class="menu-icon">
@@ -119,9 +119,9 @@
                         </a>
                     </li>
                     <li class="menu-item ">
-                        <a href="../manage_coordinator/my_topic.php" class="menu-link">
+                        <a href="../manage_coordinator/my_submission.php" class="menu-link">
                             <span class="menu-label">
-                                <span class="menu-name">Manager Topic
+                                <span class="menu-name">Manager Submission
                                 </span>
                             </span>
                             <span class="menu-icon">
@@ -153,7 +153,20 @@
                             </span>
                         </a>
                     </li>
-                <?php endif ?>
+            <?php elseif (!empty($_SESSION["current_user"]) && $currentUser['role'] === "customer") : ?>
+            <li class="menu-item active ">
+                <a href="../Customer/manage_article.php" class="menu-link">
+                            <span class="menu-label">
+                                <span class="menu-name">
+                                    Home Page
+                                </span>
+                            </span>
+                    <span class="menu-icon">
+                                <i class="icon-placeholder fe fe-activity "></i>
+                            </span>
+                </a>
+            </li>
+            <?php endif ?>
 
             <?php endif; ?>
         </ul>

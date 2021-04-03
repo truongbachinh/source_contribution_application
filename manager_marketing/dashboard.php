@@ -18,20 +18,52 @@ while ($rowSt = mysqli_fetch_array($_countTopic)) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link rel="stylesheet" href="../Chart/examples/chart.css">
     <style>
-        *{margin: 0; padding: 0;}
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
         @import url(http://fonts.googleapis.com/css?family=Roboto);
-        body{background: #FFF; font-family: 'Roboto', sans-serif;font-weight: 400}
-        #content{background: #FFF; width: 1000px; padding: 20px; margin: 0 auto}
-        h2{color: #4081BD; margin-bottom: 20px; font-weight: 400}
-        .clearBoth:after{width: 300px; border: 1px solid #EEE; margin: 50px 0; display: block;}
-        .containerChartLegend{width: 480px;padding-left: 20px}
+
+        body {
+            background: #FFF;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 400
+        }
+
+        #content {
+            background: #FFF;
+            width: 1000px;
+            padding: 20px;
+            margin: 0 auto
+        }
+
+        h2 {
+            color: #4081BD;
+            margin-bottom: 20px;
+            font-weight: 400
+        }
+
+        .clearBoth:after {
+            width: 300px;
+            border: 1px solid #EEE;
+            margin: 50px 0;
+            display: block;
+        }
+
+        .containerChartLegend {
+            width: 480px;
+            padding-left: 20px
+        }
     </style>
     <script src="../Chart/examples/ChartJS.min.js"></script>
     <?php include "../partials/html_header.php"; ?>
 </head>
+
 <body class="sidebar-pinned ">
 <?php include "../partials/aside.php"; ?>
 <main class="admin-main">
@@ -194,12 +226,11 @@ while ($rowSt = mysqli_fetch_array($_countTopic)) {
                             <h3>Chart 3</h3>
                         </div>
                         <div class="card-body">
-<!--                            Code in here-->
+<!--                            Code in here--> 
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-</main>
+        </section>
+    </main>
 </body>

@@ -96,12 +96,15 @@ if (isset($_POST["login"])) {
     $res = mysqli_query($conn, "SELECT * from user where username='$username' && password='$password'");
     $result = mysqli_query($conn, "SELECT * from user where username='$username' && password='$password'");
     $count = mysqli_num_rows($res);
+
+    printf("SELECT * from user where username='$username' && password='$password'");
     while ($row = mysqli_fetch_array($result)) {
         $status = $row["status"];
         $role = $row["role"];
+
+        var_dump($status);
+        var_dump($role);
     }
-    var_dump($status);
-    var_dump($role);
 
     if ($count == 0) {
 ?>
@@ -124,7 +127,7 @@ if (isset($_POST["login"])) {
         $userCurrent =  $_SESSION["current_user"] = $user;
     ?>
         <script type="text/javascript">
-            window.location = "../manage_coordinator/my_topic.php";
+            window.location = "../manage_coordinator/my_submission.php";
         </script>
     <?php
     } elseif ($status == "1" && $role == "manager-marketing") {
@@ -135,6 +138,14 @@ if (isset($_POST["login"])) {
             window.location = "../manager_marketing/dashboard.php";
         </script>
 <?php
+    } elseif ($status == "1" && $role == "customer") {
+        $user = mysqli_fetch_array($res);
+        $userCurrent =  $_SESSION["current_user"] = $user;
+?>
+<script type="text/javascript">
+    window.location = "../Customer/manage_article.php";
+</script>
+        <?php
     }
 }
 ?>
