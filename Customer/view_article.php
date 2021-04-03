@@ -44,52 +44,17 @@ if (isset($_POST['uploadCommnet'])) {
     $uploadCmt = $conn->query("INSERT INTO `file_comment` (`file_comment_id`, `file_comment_content`, `file_comment_time`, `file_comment_user`, `file_submited_id`) VALUES (NULL, '$_POST[commentContent]', '" . time() . "', '$userId', '$idFile'); ");
     $changeStatus = $conn->query("UPDATE `file_submit_to_submission` SET `file_status` = '$_POST[statusOfFile]' where `id` = '$idFile'");
     if ($uploadCmt == true) {
-?>
+        ?>
         <script>
             alert("oke");
             location.reload();
             // window.location.replace("./listofreport.php?idfile=<?= $fileSubmission['id'] ?>&idst=<?= $fileSubmission['u_id'] ?>");
         </script>
-<?php
+        <?php
 
     }
 }
 ?>
-
-
-<?php
-if (isset($_GET['file_id'])) {
-    $id = $_GET['file_id'];
-
-    // fetch file to download from database
-
-    $sql = "SELECT * from `file_content` where `file_submit_Id` = '$id'";
-    printf($sql);
-    $result = mysqli_query($conn, $sql);
-
-    $file = mysqli_fetch_assoc($result);
-    $filepath = '../student/file_library/' . $file['file_content_name'];
-
-    if (file_exists($filepath)) {
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename=' . basename($filepath));
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        header('Content-Length: ' . filesize('uploads/' . $file['name']));
-        readfile('../student/file_library/' . $file['file_content_name']);
-//
-//                    // Now update downloads count
-//                    $newCount = $file['downloads'] + 1;
-//                    $updateQuery = "UPDATE file_content SET downloads=$newCount WHERE id=$id";
-//                    mysqli_query($conn, $updateQuery);
-        exit;
-    }
-
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -193,7 +158,7 @@ if (isset($_GET['file_id'])) {
                                 // $fileURL =  str_replace('doc', $fileType, $fileURL);
                             }
 
-//                            var_dump($fileURL);
+                            var_dump($fileURL);
                             if (in_array($fileType, $allowTypes)) {
                                 // var_dump($fileURL);
                                 // exit;
@@ -318,11 +283,6 @@ if (isset($_GET['file_id'])) {
 
                                 <?php
                             }
-                            ?>
-                            <div style="text-align: center; padding: 10px">
-                                <a style="text-align: center" href="view_article.php?file_id=<?=$row['file_content_id']?>" class="btn btn-primary" role="button">Download</a>
-                            </div>
-                    <?php
                         }
                     }
                     ?>
@@ -388,21 +348,21 @@ if (isset($_GET['file_id'])) {
 
 
                     <!--COMPLETED ACTIONS DONUTS CHART-->
-<!--                    <div>-->
-<!--                        <form action="" method="post" enctype="multipart/form-data">-->
-<!--                            <div class="form-group">-->
-                                <!-- <label for="inputName">Comment</label>
-                                                <textarea type="text" class="form-control" id="inputName" name="commentContent" placeholder="Name of article"></textarea> -->
-<!--                                <h3>Feedback</h3>-->
-<!--                                <textarea type="text" class="form-control" id="inputName" name="commentContent" placeholder="Feedback to student" style="width: 88%; height: 50px; border-radius: 3px; border-radius: 14px; resize: none; margin-bottom: 7% "></textarea>-->
-<!--                            </div>-->
-<!--                            <div class="form-group" style="text-align:center;">-->
-<!--                                <input type="submit" name="uploadCommnet" class="btn btn-succecss" value="Feedback" style="font-size: 20px; background-color: yellowgreen; border-radius:16px; display: inline-block; " id="uploadFile">-->
-<!--                            </div>-->
-<!--                        </form>-->
-<!--                    </div>-->
-<!---->
-<!--                    <hr>-->
+                    <!--                    <div>-->
+                    <!--                        <form action="" method="post" enctype="multipart/form-data">-->
+                    <!--                            <div class="form-group">-->
+                    <!-- <label for="inputName">Comment</label>
+                                    <textarea type="text" class="form-control" id="inputName" name="commentContent" placeholder="Name of article"></textarea> -->
+                    <!--                                <h3>Feedback</h3>-->
+                    <!--                                <textarea type="text" class="form-control" id="inputName" name="commentContent" placeholder="Feedback to student" style="width: 88%; height: 50px; border-radius: 3px; border-radius: 14px; resize: none; margin-bottom: 7% "></textarea>-->
+                    <!--                            </div>-->
+                    <!--                            <div class="form-group" style="text-align:center;">-->
+                    <!--                                <input type="submit" name="uploadCommnet" class="btn btn-succecss" value="Feedback" style="font-size: 20px; background-color: yellowgreen; border-radius:16px; display: inline-block; " id="uploadFile">-->
+                    <!--                            </div>-->
+                    <!--                        </form>-->
+                    <!--                    </div>-->
+                    <!---->
+                    <!--                    <hr>-->
 
                     <div class="feedback-submission">
                         <b class="student-if">Feedback</b>
@@ -429,6 +389,43 @@ if (isset($_GET['file_id'])) {
                         ?>
                     </div>
                     <hr>
+                    <div>
+                        <a style="height: 40px; background: #0a6aa1 ; width: 70px; text-align: center" href="view_article.php?file_id=<?php echo $fileContent['file_content_id']?>">
+                            download
+                        </a>
+                    </div>
+                    <?php
+                    if (isset($_GET['file_id'])) {
+                        $id = $_GET['file_id'];
+
+                        // fetch file to download from database
+
+                        $sql = "SELECT * from `file_content` where `file_submit_Id` = '$id'";
+                        $result = mysqli_query($conn, $sql);
+
+                        $file = mysqli_fetch_assoc($result);
+                        $filepath = '../student/file_library/' . $file['file_content_name'];
+
+                        if (file_exists($filepath)) {
+                            header('Content-Description: File Transfer');
+                            header('Content-Type: application/octet-stream');
+                            header('Content-Disposition: attachment; filename=' . basename($filepath));
+                            header('Expires: 0');
+                            header('Cache-Control: must-revalidate');
+                            header('Pragma: public');
+                            header('Content-Length: ' . filesize('uploads/' . $file['name']));
+                            readfile('../student/file_library/' . $file['file_content_name']);
+//
+//                    // Now update downloads count
+//                    $newCount = $file['downloads'] + 1;
+//                    $updateQuery = "UPDATE file_content SET downloads=$newCount WHERE id=$id";
+//                    mysqli_query($conn, $updateQuery);
+                            exit;
+                        }
+
+                    }
+                    ?>
+                    <hr>
 
                 </div>
             </div>
@@ -451,7 +448,7 @@ if (isset($_GET['file_id'])) {
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-66116118-3"></script>
-<script> 
+<script>
     window.dataLayer = window.dataLayer || [];
 
     function gtag() {

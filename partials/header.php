@@ -4,7 +4,7 @@
         <ul class="nav align-items-center m-r-30">
             <li class=nav-item>
                 <div class="d-flex p-all-15  justify-content-between">
-                    <a href="#!" class="nar-link"><i class="mdi mdi-24px mdi-chat"></i>
+                    <a href="../Chat/conversation.php" class="nar-link"><i class="mdi mdi-24px mdi-chat"></i>
                         <!-- <span class="notification-counter"></span></a> -->
             </li>
             <li class="nav-item">
