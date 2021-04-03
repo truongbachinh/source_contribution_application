@@ -55,6 +55,41 @@ if (isset($_POST['uploadCommnet'])) {
     }
 }
 ?>
+
+
+<?php
+if (isset($_GET['file_id'])) {
+    $id = $_GET['file_id'];
+
+    // fetch file to download from database
+
+    $sql = "SELECT * from `file_content` where `file_submit_Id` = '$id'";
+    printf($sql);
+    $result = mysqli_query($conn, $sql);
+
+    $file = mysqli_fetch_assoc($result);
+    $filepath = '../student/file_library/' . $file['file_content_name'];
+
+    if (file_exists($filepath)) {
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename=' . basename($filepath));
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize('uploads/' . $file['name']));
+        readfile('../student/file_library/' . $file['file_content_name']);
+//
+//                    // Now update downloads count
+//                    $newCount = $file['downloads'] + 1;
+//                    $updateQuery = "UPDATE file_content SET downloads=$newCount WHERE id=$id";
+//                    mysqli_query($conn, $updateQuery);
+        exit;
+    }
+
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -158,7 +193,7 @@ if (isset($_POST['uploadCommnet'])) {
                                 // $fileURL =  str_replace('doc', $fileType, $fileURL);
                             }
 
-                            var_dump($fileURL);
+//                            var_dump($fileURL);
                             if (in_array($fileType, $allowTypes)) {
                                 // var_dump($fileURL);
                                 // exit;
@@ -283,6 +318,11 @@ if (isset($_POST['uploadCommnet'])) {
 
                                 <?php
                             }
+                            ?>
+                            <div style="text-align: center; padding: 10px">
+                                <a style="text-align: center" href="view_article.php?file_id=<?=$row['file_content_id']?>" class="btn btn-primary" role="button">Download</a>
+                            </div>
+                    <?php
                         }
                     }
                     ?>
@@ -388,43 +428,6 @@ if (isset($_POST['uploadCommnet'])) {
                         }
                         ?>
                     </div>
-                    <hr>
-                    <div>
-                    <a style="height: 40px; background: #0a6aa1 ; width: 70px; text-align: center" href="view_article.php?file_id=<?php echo $fileContent['file_content_id']?>">
-                    download
-                    </a>
-                    </div>
-                    <?php
-                    if (isset($_GET['file_id'])) {
-                        $id = $_GET['file_id'];
-
-                        // fetch file to download from database
-
-                        $sql = "SELECT * from `file_content` where `file_submit_Id` = '$id'";
-                        $result = mysqli_query($conn, $sql);
-
-                        $file = mysqli_fetch_assoc($result);
-                        $filepath = '../student/file_library/' . $file['file_content_name'];
-
-                        if (file_exists($filepath)) {
-                            header('Content-Description: File Transfer');
-                            header('Content-Type: application/octet-stream');
-                            header('Content-Disposition: attachment; filename=' . basename($filepath));
-                            header('Expires: 0');
-                            header('Cache-Control: must-revalidate');
-                            header('Pragma: public');
-                            header('Content-Length: ' . filesize('uploads/' . $file['name']));
-                            readfile('../student/file_library/' . $file['file_content_name']);
-//
-//                    // Now update downloads count
-//                    $newCount = $file['downloads'] + 1;
-//                    $updateQuery = "UPDATE file_content SET downloads=$newCount WHERE id=$id";
-//                    mysqli_query($conn, $updateQuery);
-                            exit;
-                        }
-
-                    }
-                    ?>
                     <hr>
 
                 </div>

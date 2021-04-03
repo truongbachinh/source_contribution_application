@@ -159,7 +159,7 @@ while ($rowSt = mysqli_fetch_array($_countTopic)) {
                             <?php
                             /** @var TYPE_NAME $conn */
 
-                            $chartTopicbyYear = $conn->query("select faculty.f_id, faculty.f_name, year(topic.topic_deadline) as year, count(*) as contributions from faculty join topic on faculty.f_id = topic.faculty_id group by year(topic.topic_deadline), faculty.f_id");
+                            $chartTopicbyYear = $conn->query("select faculty.f_id, faculty.f_name, year(submission.submission_deadline) as year, count(*) as contributions from faculty join submission on faculty.f_id = submission.id group by year(submission.submission_deadline), faculty.f_id");
 
                             $yearTopicbyYear = array();
                             $keyTopicbyYear = array();
