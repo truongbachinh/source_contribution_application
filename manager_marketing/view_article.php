@@ -6,37 +6,9 @@ $idStudent = $_GET['idst'];
 $userFacultyId = $_SESSION["current_user"]["faculty_id"];
 $userId = $_SESSION["current_user"]["u_id"];
 
-
-// SELECT file_content.*, file_comment.*,file_submit_to_submission.* from `file_submit_to_submission`INNER JOIN file_content ON file_submit_to_submission.id = file_content.file_submit_id INNER JOIN file_comment ON file_comment.file_submited_id = file_submit_to_submission.id where `file_submit_Id` = '60'
-// $fileSubmission = $conn->query("SELECT submission.*, file_submit_to_submission.*, file_content.*, file_comment.* from `submission` INNER JOIN file_submit_to_submission ON file_submit_to_submission.file_submission_uploaded = submission.id INNER JOIN file_content ON file_content.file_submit_id = file_submit_to_submission.id INNER JOIN file_comment ON file_comment.file_submited_id = file_submit_to_submission.id where `file_submit_Id` = '$idFile'");
-// $submissionContent = $conn->query("SELECT * from `submission` where `file_submit_Id` = '$idFile'");
-
-// $fileSubmission = $conn->query("SELECT file_content.*, file_comment.* from `file_content` INNER JOIN file_comment ON file_comment.file_submited_id = file_content.file_submit_id where file_content.file_submit_id = '60' AND file_comment.file_submited_id = '60'");
-// $fileSubmissionContent = array();
-// while ($view = mysqli_fetch_array($fileSubmission)) {
-//     $fileSubmissionContent[] = $view;
-// }
-// // $submissionContent = mysqli_fetch_assoc($submission);
-
-// // var_dump($fileSubmission);
-// foreach ($fileSubmissionContent as $rowSb) {
-//     var_dump($rowSb['file_comment_content']);
-// }
-
-// exit;
-
-
-
-
-
-
 $fileContent = $conn->query("SELECT file_content.* from `file_content` where `file_submit_Id` = '$idFile'");
 $fileComment = $conn->query("SELECT file_comment.*,u.* from `file_comment` INNER JOIN user as u ON u.u_id = file_comment.file_comment_user where `file_submited_Id` = '$idFile'");
-$fileSubmission = $conn->query("SELECT file_submit_to_submission.*, user.*,faculty.* FROM file_submit_to_submission INNER JOIN user ON file_submit_to_submission.file_userId_uploaded = user.u_id INNER JOIN faculty ON faculty.f_id = user.faculty_id WHERE user.role = 'student' AND user.faculty_id = '$userFacultyId'  ORDER BY id DESC LIMIT 1");
-
-
-
-
+$fileSubmission = $conn->query("SELECT file_submit_to_submission.*, user.*,faculty.* FROM file_submit_to_submission INNER JOIN user ON file_submit_to_submission.file_userId_uploaded = user.u_id INNER JOIN faculty ON faculty.f_id = user.faculty_id WHERE user.role = 'student' AND user.faculty_id = '$userFacultyId' AND file_submit_to_submission.id = '$idFile'");
 ?>
 <?php
 if (isset($_POST['uploadCommnet'])) {
@@ -48,7 +20,7 @@ if (isset($_POST['uploadCommnet'])) {
         <script>
             alert("oke");
             location.reload();
-            // window.location.replace("./listofreport.php?idfile=<?= $fileSubmission['id'] ?>&idst=<?= $fileSubmission['u_id'] ?>");
+             window.location.replace("./listofreport.php?idfile=<?= $fileSubmission['id'] ?>&idst=<?= $fileSubmission['u_id'] ?>");
         </script>
 <?php
 
@@ -152,38 +124,6 @@ if (isset($_GET['file_id'])) {
 
 
                             if ($fileType === "docx") {
-                                // $fields_string = "";
-                                // $url = '';
-                                // $fields = array(
-                                //     'inputFile' => file_get_contents($fileURL),
-                                //     'conversionParameters' => '{}',
-                                //     'outputFormat' => 'pdf',
-                                //     'async' => 'false'
-                                // );
-                                // // var_dump($fields);
-                                // //url-ify the data for the POST
-                                // foreach ($fields as $key => $value) {
-                                //     $fields_string .= $key . '=' . $value . '&';
-                                // }
-                                // // print_r("``````````````````````````````````````````````");
-                                // $fields_string = rtrim($fields_string, '&');
-                                // // var_dump($fields_string);
-                                // //open connection
-                                // $ch = curl_init();
-                                // //set the url, number of POST vars, POST data
-                                // curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                                //     'X-ApplicationID: 6c278907-e2a6-4f49-a929-6d08d0284786',
-                                //     'X-SecretKey: ba3bf94f-f83e-405b-8104-ad4fc84f43bc'
-                                // ));
-                                // curl_setopt($ch, CURLOPT_URL, $url);
-                                // curl_setopt($ch, CURLOPT_POST, count($fields));
-                                // curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
-                                // //execute post
-                                // $result = curl_exec($ch);
-                                // print_r($result);
-
-
-
 
                                 $fileType = "pdf";
                                 $a =  str_replace('docx', $fileType, $fileURL);
